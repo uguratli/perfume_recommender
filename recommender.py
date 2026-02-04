@@ -143,13 +143,3 @@ def recommend(query, model=model, brands=brands, mean_brand_emb=mean_brand_emb, 
             "Score": float(dist)
         })
     return pd.DataFrame(results), results
-
-while True:
-    query = input("Enter your perfume description (or 'exit' to quit): ")
-    if query.lower() == 'exit':
-        break
-    df_results, results = recommend(query)
-    for res in results:
-        print(f"{res['Name']} by {res['Brand']} - Score: {res['Score']:.4f}")
-        print(f"    Main Accords: {res['Main Accords']}")
-        print(f"    Description: {res['Description']}\n")
