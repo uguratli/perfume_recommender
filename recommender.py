@@ -5,7 +5,7 @@ import faiss
 import pickle
 
 model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-
+raw_data = pd.read_csv("fra_perfumes.csv")
 with open('data.pkl', 'rb') as f:
    data = pickle.load(f)
 
@@ -138,8 +138,11 @@ def recommend(query, model=model, brands=brands, mean_brand_emb=mean_brand_emb, 
             "Name": row["Name"],
             "Brand": row["Brand"],
             "Gender": row["Gender"],
-            "Main Accords": row["Main Accords"],
+            "Main Accords": raw_data["Main Accords"][idx],
             "Description": row["Description"],
             "Score": float(dist)
         })
-    return pd.DataFrame(results), results
+    results_df = pd.DataFrame(results)
+    results_df["Main Accords"] = results_df["Main Accords"].apply(lambda x: x.replace("[]", "Not Specified"))
+    results_df["Main Accords"] = results_df["Main Accords"].apply(lambda x: x.replace("]", "").replace("[", "").replace("'", "").replace(",", ", "))
+    return results_df, results
