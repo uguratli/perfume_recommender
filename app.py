@@ -117,5 +117,5 @@ if st.session_state.searched and st.session_state.last_query:
     with st.spinner("Blending fragrance notes..."):
         results_df, _ = recommend(st.session_state.last_query)
 
-    st.dataframe(results_df, use_container_width=True)
+    st.dataframe(results_df[['Name', 'Brand', 'Gender', 'Main Accords', 'Description', 'Score', 'URL']].set_index('Name'), use_container_width=True)
 
